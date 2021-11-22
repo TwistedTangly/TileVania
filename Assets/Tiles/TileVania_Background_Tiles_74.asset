@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TileVania_Background_Tiles_74
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: -497003009211417090, guid: d615ce001338374478e228fc11acab18, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.3584906, g: 0.33312568, b: 0.33312568, a: 1}
   m_Transform:
     e00: 1
     e01: 0
