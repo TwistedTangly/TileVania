@@ -56,3 +56,9 @@ TagManager:
   - name: Platforms
     uniqueID: 3214941445
     locked: 0
+  - name: Front
+    uniqueID: 410822129
+    locked: 0
+  - name: Player
+    uniqueID: 1966573179
+    locked: 0
