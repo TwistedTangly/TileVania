@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 23bd518e89e94324783877839321b1d7
+guid: 032225caebbae0645811a3f75a8dfb10
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -66,9 +66,9 @@ TextureImporter:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
+    resizeAlgorithm: 1
+    textureFormat: 4
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -78,9 +78,9 @@ TextureImporter:
   - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
+    resizeAlgorithm: 1
+    textureFormat: 4
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -90,9 +90,9 @@ TextureImporter:
   - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
+    resizeAlgorithm: 1
+    textureFormat: 4
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -104,10 +104,18 @@ TextureImporter:
     sprites: []
     outline: []
     physicsShape:
-    - - {x: -4, y: -8}
-      - {x: -4, y: 8}
-      - {x: 4, y: 8}
-      - {x: 4, y: -8}
+    - - {x: -7, y: 5}
+      - {x: -7, y: 0}
+      - {x: -5, y: -2}
+      - {x: -1, y: -2}
+      - {x: -1, y: -8}
+      - {x: 1, y: -8}
+      - {x: 1, y: -2}
+      - {x: 5, y: -2}
+      - {x: 7, y: 0}
+      - {x: 7, y: 5}
+      - {x: 3, y: 8}
+      - {x: -3, y: 8}
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
