@@ -21,7 +21,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float climbSpeed = 5f;
     [SerializeField] float jumpSpeed = 5f;
     [SerializeField] float flashTime = .3f;
-    void Start()
+    [SerializeField] GameObject arrow;
+    [SerializeField] Transform spawnPoint;
+    void Start() 
     {
         myRigidbody2D = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
@@ -125,5 +127,21 @@ public class PlayerMovement : MonoBehaviour
         mySpriteRenderer.color = Color.white;
     }
 
+    void OnFire(InputValue value)
+    {
+        if(!isAlive){return;}  
+
+        if(transform.localScale.x == -1)
+        {
+            arrow.transform.localScale = new Vector3(-1,1,1);
+        }
+        else
+        {
+            arrow.transform.localScale = new Vector3(1,1,1);
+        }
+
+        Instantiate(arrow, spawnPoint.position, spawnPoint.rotation);
+        myAnimator.SetTrigger("Firing");
+    }
 
 }

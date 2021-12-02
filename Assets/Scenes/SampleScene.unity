@@ -1002,7 +1002,7 @@ GameObject:
   - component: {fileID: 119786908}
   m_Layer: 11
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59774,25 +59774,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 762593915562729574, guid: 01b5b2dbf6d82a8499d3301516d57bcf, type: 3}
-      propertyPath: flashTime
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 8073879346234520644, guid: 01b5b2dbf6d82a8499d3301516d57bcf, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 8073879346234520645, guid: 01b5b2dbf6d82a8499d3301516d57bcf, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8073879346234520645, guid: 01b5b2dbf6d82a8499d3301516d57bcf, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8073879346234520645, guid: 01b5b2dbf6d82a8499d3301516d57bcf, type: 3}
-      propertyPath: m_Color.r
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8073879346234520647, guid: 01b5b2dbf6d82a8499d3301516d57bcf, type: 3}
       propertyPath: m_RootOrder
