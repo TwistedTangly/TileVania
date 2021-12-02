@@ -10,22 +10,28 @@ public class PlayerMovement : MonoBehaviour
     Animator myAnimator;
     CapsuleCollider2D myBodyCollider2D;
     BoxCollider2D feetCollider2d;
+    SpriteRenderer mySpriteRenderer;
     LayerMask groundLayer;
     LayerMask climbableLayer;
+    LayerMask DamageLayer;
     float beginingGravityScale;
     float beginingAnimationSpeed;
+    bool isAlive = true;
     [SerializeField] float runSpeed = 10f;
     [SerializeField] float climbSpeed = 5f;
     [SerializeField] float jumpSpeed = 5f;
+    [SerializeField] float flashTime = .3f;
     void Start()
     {
         myRigidbody2D = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         myBodyCollider2D = GetComponent<CapsuleCollider2D>();
         feetCollider2d = GetComponent<BoxCollider2D>();
+        mySpriteRenderer = GetComponent<SpriteRenderer>();
 
         groundLayer = LayerMask.GetMask("Ground");
         climbableLayer = LayerMask.GetMask("Climbing");
+        DamageLayer = LayerMask.GetMask("Enemies", "Hazards");
 
         beginingGravityScale = myRigidbody2D.gravityScale; 
         beginingAnimationSpeed = myAnimator.speed;
@@ -33,13 +39,17 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if(!isAlive){return;}
+
         Run();
         FlipSprite();
-        ClimbLadder();
+        ClimbLadder();  
+        Die();      
     }
 
     void OnMove(InputValue value)
     {
+        if(!isAlive){return;}
         moveInput = value.Get<Vector2>();
         Debug.Log(moveInput);
     }
@@ -65,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
 
     void OnJump(InputValue value)
     {
+        if(!isAlive){return;}
         if(!feetCollider2d.IsTouchingLayers(groundLayer)) { return;}
         
         if(value.isPressed)
@@ -93,8 +104,26 @@ public class PlayerMovement : MonoBehaviour
         if(playerHasVerticalSpeed)
         {
             myAnimator.speed = beginingAnimationSpeed;
-        }        
-        
-
+        }   
     }
+
+    private void Die() 
+    {
+        if(myBodyCollider2D.IsTouchingLayers(DamageLayer))
+        {
+            isAlive = false;
+            myAnimator.SetTrigger("Dying");
+            myRigidbody2D.velocity += new Vector2(0f, jumpSpeed);
+            StartCoroutine(ColourFlash());            
+        }
+    }
+
+    IEnumerator ColourFlash()
+    {
+        mySpriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(flashTime);
+        mySpriteRenderer.color = Color.white;
+    }
+
+
 }
