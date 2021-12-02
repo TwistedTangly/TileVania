@@ -14,12 +14,16 @@ public class PlayerMovement : MonoBehaviour
     LayerMask groundLayer;
     LayerMask climbableLayer;
     LayerMask DamageLayer;
+    LayerMask waterLayer;
     float beginingGravityScale;
     float beginingAnimationSpeed;
     bool isAlive = true;
-    [SerializeField] float runSpeed = 10f;
+    [SerializeField] float baseGravity = 6f;
+    [SerializeField] float WaterGravity = .1f;
+    [SerializeField] float runSpeed = 7f;
     [SerializeField] float climbSpeed = 5f;
     [SerializeField] float jumpSpeed = 5f;
+    [SerializeField] float swimJumpSpeed = 1f;
     [SerializeField] float flashTime = .3f;
     [SerializeField] GameObject arrow;
     [SerializeField] Transform spawnPoint;
@@ -34,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
         groundLayer = LayerMask.GetMask("Ground");
         climbableLayer = LayerMask.GetMask("Climbing");
         DamageLayer = LayerMask.GetMask("Enemies", "Hazards");
+        waterLayer = LayerMask.GetMask("Water");
 
         beginingGravityScale = myRigidbody2D.gravityScale; 
         beginingAnimationSpeed = myAnimator.speed;
@@ -46,7 +51,23 @@ public class PlayerMovement : MonoBehaviour
         Run();
         FlipSprite();
         ClimbLadder();  
-        Die();      
+        Die(); 
+        Swim();             
+    }
+
+    void Swim()
+    {
+         if(feetCollider2d.IsTouchingLayers(waterLayer)) 
+         { 
+            myRigidbody2D.gravityScale = WaterGravity;
+            runSpeed = 2f;
+         }
+         else
+         {
+             myRigidbody2D.gravityScale = baseGravity;
+             runSpeed = 7f;
+         }
+
     }
 
     void OnMove(InputValue value)
@@ -78,11 +99,19 @@ public class PlayerMovement : MonoBehaviour
     void OnJump(InputValue value)
     {
         if(!isAlive){return;}
-        if(!feetCollider2d.IsTouchingLayers(groundLayer)) { return;}
+        if(!feetCollider2d.IsTouchingLayers(groundLayer) && !feetCollider2d.IsTouchingLayers(waterLayer)) { return;}
         
         if(value.isPressed)
         {
-            myRigidbody2D.velocity += new Vector2(0f, jumpSpeed);
+            if(feetCollider2d.IsTouchingLayers(waterLayer))
+            {
+                myRigidbody2D.velocity += new Vector2(0f, swimJumpSpeed);
+            }
+            else
+            {
+                myRigidbody2D.velocity += new Vector2(0f, jumpSpeed);
+            }
+            
         }
     }
 
@@ -141,7 +170,14 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Instantiate(arrow, spawnPoint.position, spawnPoint.rotation);
-        myAnimator.SetTrigger("Firing");
+        StartCoroutine(FireAnim());
+    }
+
+    IEnumerator FireAnim()
+    {
+        myAnimator.SetBool("isFiring", true);
+        yield return new WaitForSeconds(.3f);
+        myAnimator.SetBool("isFiring", false);
     }
 
 }
