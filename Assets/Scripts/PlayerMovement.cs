@@ -15,9 +15,13 @@ public class PlayerMovement : MonoBehaviour
     LayerMask climbableLayer;
     LayerMask DamageLayer;
     LayerMask waterLayer;
+    LayerMask portalLayer;
     float beginingGravityScale;
     float beginingAnimationSpeed;
     bool isAlive = true;
+    float currentScale = 1;
+    [SerializeField] float timeBetweenShrinking = 0.2f;
+    [SerializeField] float shrinkAmount = 0.1f;
     [SerializeField] float baseGravity = 6f;
     [SerializeField] float WaterGravity = .1f;
     [SerializeField] float runSpeed = 7f;
@@ -39,20 +43,51 @@ public class PlayerMovement : MonoBehaviour
         climbableLayer = LayerMask.GetMask("Climbing");
         DamageLayer = LayerMask.GetMask("Enemies", "Hazards");
         waterLayer = LayerMask.GetMask("Water");
+        portalLayer = LayerMask.GetMask("Portal");
 
         beginingGravityScale = myRigidbody2D.gravityScale; 
         beginingAnimationSpeed = myAnimator.speed;
+
     }
 
     void Update()
     {
         if(!isAlive){return;}
 
+        if(!feetCollider2d.IsTouchingLayers(waterLayer) || !feetCollider2d.IsTouchingLayers(climbableLayer))
+         {
+             myRigidbody2D.gravityScale = baseGravity;
+             runSpeed = 7f;
+         }
+
         Run();
         FlipSprite();
         ClimbLadder();  
         Die(); 
-        Swim();             
+        Swim(); 
+        LevelTransistion();            
+    }
+
+    void LevelTransistion()
+    {
+        if(myBodyCollider2D.IsTouchingLayers(portalLayer))
+        {
+            StartCoroutine(TrasitionEffects());
+        }
+    }
+
+    IEnumerator TrasitionEffects()
+    {
+        isAlive = false;
+        myRigidbody2D.velocity = new Vector2(0,0);
+        myRigidbody2D.gravityScale = -0.05f;
+        while(currentScale > 0){
+            yield return new WaitForSecondsRealtime(timeBetweenShrinking);
+            currentScale -= shrinkAmount;
+            transform.localScale = new Vector3(currentScale,currentScale,0);
+            mySpriteRenderer.color = new Color(1,1,1,currentScale);
+                        
+        }
     }
 
     void Swim()
@@ -61,13 +96,8 @@ public class PlayerMovement : MonoBehaviour
          { 
             myRigidbody2D.gravityScale = WaterGravity;
             runSpeed = 2f;
-         }
-         else
-         {
-             myRigidbody2D.gravityScale = baseGravity;
-             runSpeed = 7f;
-         }
-
+         }    
+         
     }
 
     void OnMove(InputValue value)
@@ -123,7 +153,7 @@ public class PlayerMovement : MonoBehaviour
             myRigidbody2D.gravityScale = beginingGravityScale;
             myAnimator.speed = beginingAnimationSpeed;
             return;
-         }
+        }
 
         Vector2 climbVelocity = new Vector2(myRigidbody2D.velocity.x, moveInput.y * climbSpeed);
         myRigidbody2D.velocity = climbVelocity ;
