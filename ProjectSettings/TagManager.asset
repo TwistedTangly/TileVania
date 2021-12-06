@@ -69,11 +69,14 @@ TagManager:
   - name: Interactables
     uniqueID: 944176145
     locked: 0
-  - name: Portal
-    uniqueID: 1432215179
-    locked: 0
   - name: Enemies
     uniqueID: 328916977
+    locked: 0
+  - name: FadeOut
+    uniqueID: 2737031891
+    locked: 0
+  - name: Portal
+    uniqueID: 1432215179
     locked: 0
   - name: Player
     uniqueID: 1966573179

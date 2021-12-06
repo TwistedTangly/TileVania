@@ -20,8 +20,12 @@ public class PlayerMovement : MonoBehaviour
     float beginingAnimationSpeed;
     bool isAlive = true;
     float currentScale = 1;
+    float startWhiteOpacity = 0;
+    float currentRotation = 0f;
     [SerializeField] float timeBetweenShrinking = 0.2f;
+    [SerializeField] float timeBetweenOpacityChange = 0.1f;
     [SerializeField] float shrinkAmount = 0.1f;
+    [SerializeField] float opacityIncrease = 0.1f;
     [SerializeField] float baseGravity = 6f;
     [SerializeField] float WaterGravity = .1f;
     [SerializeField] float runSpeed = 7f;
@@ -31,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float flashTime = .3f;
     [SerializeField] GameObject arrow;
     [SerializeField] Transform spawnPoint;
+    [SerializeField] GameObject whiteBackground;
     void Start() 
     {
         myRigidbody2D = GetComponent<Rigidbody2D>();
@@ -73,21 +78,38 @@ public class PlayerMovement : MonoBehaviour
         if(myBodyCollider2D.IsTouchingLayers(portalLayer))
         {
             StartCoroutine(TrasitionEffects());
+            StartCoroutine(FadeOut());
         }
     }
 
     IEnumerator TrasitionEffects()
     {
         isAlive = false;
-        myRigidbody2D.velocity = new Vector2(0,0);
-        myRigidbody2D.gravityScale = -0.05f;
-        while(currentScale > 0){
+        myAnimator.SetTrigger("Float");
+        myRigidbody2D.velocity = new Vector2(0.3f,0);
+        myRigidbody2D.gravityScale = -0.03f;
+        while(currentScale > 0)
+        {
             yield return new WaitForSecondsRealtime(timeBetweenShrinking);
             currentScale -= shrinkAmount;
+            
             transform.localScale = new Vector3(currentScale,currentScale,0);
             mySpriteRenderer.color = new Color(1,1,1,currentScale);
-                        
+                                   
         }
+    }
+
+    IEnumerator FadeOut()
+    {
+        while(startWhiteOpacity < 1)
+        {
+            yield return new WaitForSecondsRealtime(timeBetweenOpacityChange);
+            currentRotation += 30;
+            transform.localRotation = Quaternion.Euler(0,0,currentRotation);
+            startWhiteOpacity += opacityIncrease;
+            whiteBackground.GetComponent<SpriteRenderer>().color = new Color(1,1,1,startWhiteOpacity); 
+        }
+
     }
 
     void Swim()
