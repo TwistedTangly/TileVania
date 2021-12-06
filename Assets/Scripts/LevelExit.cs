@@ -16,6 +16,7 @@ public class LevelExit : MonoBehaviour
 
     IEnumerator LevelChange()
     {
+        FindObjectOfType<ScenePersist>().ResetScenePersist();
         yield return new WaitForSecondsRealtime(LevelLoadDelay);
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
@@ -23,7 +24,7 @@ public class LevelExit : MonoBehaviour
         {
             nextSceneIndex = 0;
         }
-        FindObjectOfType<ScenePersist>().ResetScenePersist();
+        
         SceneManager.LoadScene(nextSceneIndex);
     }
 
