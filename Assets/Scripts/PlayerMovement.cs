@@ -197,7 +197,8 @@ public class PlayerMovement : MonoBehaviour
             isAlive = false;
             myAnimator.SetTrigger("Dying");
             myRigidbody2D.velocity += new Vector2(0f, jumpSpeed);
-            StartCoroutine(ColourFlash());            
+            StartCoroutine(ColourFlash());     
+            FindObjectOfType<GameSession>().ProcessPlayerDeath();       
         }
     }
 
